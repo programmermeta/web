@@ -1,16 +1,23 @@
-html,
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "CocoSharp";
+  src: url(/fonts/CocoSharpL-Regular.otf);
+}
+
+@font-face {
+  font-family: "CocoSharp";
+  src: url(/fonts/CocoSharpL-Bold.otf);
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Monofur";
+  src: url(/assets/monofur.ttf);
+}
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+  background: linear-gradient(90deg, #152331 0%, #000000 100%);
 }
