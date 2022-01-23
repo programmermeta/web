@@ -4,34 +4,48 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { debounce } from "lodash-es";
 import Button from "../components/Button";
 import { publicApi } from "../services/api";
 import { toast } from "react-toastify";
 
+const validateUsername = async (
+  value: string | undefined,
+  resolve: (val: boolean) => void
+) => {
+  const res = await publicApi.get(`/api/v1/users/check/${value}`);
+  return resolve(!!res.data.ok);
+};
+
+const validateDebounced = debounce(validateUsername, 1000);
+
 const schema = yup.object({
-  username: yup.string().required("username cannot be empty"),
-  password: yup.string().required("password cannot be empty"),
+  username: yup
+    .string()
+    .required()
+    .test(
+      "checkUsername",
+      "oops! username is already taken :(",
+      (value) => new Promise((resolve) => validateDebounced(value, resolve))
+    ),
+  password: yup
+    .string()
+    .required("Password cannot be empty")
+    .min(4, "Password is too short"),
 });
 
-const SigninPage: FC = () => {
+const SignupPage: FC = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
   });
 
-  const onSubmit: SubmitHandler<{
-    username: string;
-    password: string;
-  }> = async (values) => {
+  const onSubmit = async (values: any) => {
     try {
-      const res = await publicApi.post("/api/v1/auth/login", values);
+      const res = await publicApi.post("/api/v1/users", values);
       console.log(res.data);
     } catch (err: any) {
       return toast.error(err.response.data.message);
@@ -50,7 +64,7 @@ const SigninPage: FC = () => {
           </nav>
         </header>
         <section className="mt-8 flex-grow md:flex md:flex-col md:justify-center">
-          <h1 className="text-3xl md:text-6xl font-bold">welcome back.</h1>
+          <h1 className="text-3xl md:text-6xl font-bold">get started now.</h1>
           <form
             className="my-12 flex flex-col gap-4"
             onSubmit={handleSubmit(onSubmit)}
@@ -70,7 +84,7 @@ const SigninPage: FC = () => {
               )}
             </label>
             <label
-              htmlFor="password"
+              htmlFor="username"
               className="text-md md:text-xl flex flex-col"
             >
               <div className="mb-2">password</div>
@@ -85,7 +99,7 @@ const SigninPage: FC = () => {
             </label>
             <div className="p-2" />
             <Button type="submit">
-              login <FaArrowCircleRight size={20} />
+              signup <FaArrowCircleRight size={20} />
             </Button>
           </form>
         </section>
@@ -97,4 +111,4 @@ const SigninPage: FC = () => {
   );
 };
 
-export default SigninPage;
+export default SignupPage;

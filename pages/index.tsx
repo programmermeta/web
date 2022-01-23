@@ -30,7 +30,7 @@ const IndexPage = () => {
           </Link>
         </div>
         <div className="w-full h-full relative">
-          <Image priority layout="fill" src="/hero.svg" />
+          <Image priority layout="fill" src="/hero.webp" objectFit="contain" />
         </div>
       </section>
     </div>
