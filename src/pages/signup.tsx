@@ -8,6 +8,7 @@ import { debounce } from "lodash-es";
 import Button from "../components/Button";
 import { publicApi } from "../services/api";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const validateUsername = async (
   value: string | undefined,
@@ -35,6 +36,8 @@ const schema = yup.object({
 });
 
 const SignupPage: FC = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -45,8 +48,8 @@ const SignupPage: FC = () => {
 
   const onSubmit = async (values: any) => {
     try {
-      const res = await publicApi.post("/api/v1/users", values);
-      console.log(res.data);
+      await publicApi.post("/api/v1/users", values);
+      router.push("/signin");
     } catch (err: any) {
       return toast.error(err.response.data.message);
     }

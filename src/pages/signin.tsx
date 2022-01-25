@@ -7,6 +7,10 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import Button from "../components/Button";
 import { publicApi } from "../services/api";
 import { toast } from "react-toastify";
+import { useAtom } from "jotai";
+import { refreshAtom } from "../atoms";
+import { useRouter } from "next/router";
+import { tokenName } from "../utils/constants";
 
 const schema = yup.object({
   username: yup.string().required("username cannot be empty"),
@@ -26,13 +30,18 @@ const SigninPage: FC = () => {
     },
   });
 
+  const [, setRefresh] = useAtom(refreshAtom);
+  const router = useRouter();
+
   const onSubmit: SubmitHandler<{
     username: string;
     password: string;
   }> = async (values) => {
     try {
       const res = await publicApi.post("/api/v1/auth/login", values);
-      console.log(res.data);
+      localStorage.setItem(tokenName, res.data.token);
+      setRefresh(true);
+      router.replace("/dashboard");
     } catch (err: any) {
       return toast.error(err.response.data.message);
     }
