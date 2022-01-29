@@ -9,6 +9,7 @@ import Button from "../components/Button";
 import { publicApi } from "../services/api";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import Header from "../components/Header";
 
 const validateUsername = async (
   value: string | undefined,
@@ -58,14 +59,7 @@ const SignupPage: FC = () => {
   return (
     <section className="text-white w-screen h-screen flex flex-col md:grid md:gap-8 md:grid-cols-[1fr_2fr]">
       <section className="p-8 md:p-16 flex flex-col">
-        <header>
-          <nav>
-            <div className="font-logo text-xl md:text-4xl">
-              <span className="border-b-4 border-primary">code</span>
-              <span className="text-primary">space</span>
-            </div>
-          </nav>
-        </header>
+        <Header />
         <section className="mt-8 flex-grow md:flex md:flex-col md:justify-center">
           <h1 className="text-3xl md:text-6xl font-bold">get started now.</h1>
           <form

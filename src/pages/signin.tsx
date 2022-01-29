@@ -11,6 +11,7 @@ import { useAtom } from "jotai";
 import { refreshAtom } from "../atoms";
 import { useRouter } from "next/router";
 import { tokenName } from "../utils/constants";
+import Header from "../components/Header";
 
 const schema = yup.object({
   username: yup.string().required("username cannot be empty"),
@@ -50,14 +51,7 @@ const SigninPage: FC = () => {
   return (
     <section className="text-white w-screen h-screen flex flex-col md:grid md:gap-8 md:grid-cols-[1fr_2fr]">
       <section className="p-8 md:p-16 flex flex-col">
-        <header>
-          <nav>
-            <div className="font-logo text-xl md:text-4xl">
-              <span className="border-b-4 border-primary">code</span>
-              <span className="text-primary">space</span>
-            </div>
-          </nav>
-        </header>
+        <Header />
         <section className="mt-8 flex-grow md:flex md:flex-col md:justify-center">
           <h1 className="text-3xl md:text-6xl font-bold">welcome back.</h1>
           <form
